@@ -2,13 +2,13 @@ Package: Fabs
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Authors@R: c(person(given = "Xiao", family = "Zhang", role = c("aut","cre"), email = "zhangxiao_0422@163.com"),
-             person(given = "Xu", family = "Liu", role = "aut"),
+Authors@R: c(person(given = "Xu", family = "Liu", role = c("aut","cre")),
+             person(given = "Xiao", family = "Zhang", role = "aut"),
              person(given = "Yiming", family = "Liu", role = "aut"),
              person(given = "Panpan", family = "Ren", role = "aut"),
              person(given = "Xingjie", family = "Shi", role = "aut"))
-Author: Xiao Zhang [aut,cre], 
-        Xu Liu [aut],
+Author: Xu Liu [aut,cre],
+        Xiao Zhang [aut], 
         Yiming Liu [aut],
         Panpan Ren [aut],
         Xingjie Shi [aut]
