@@ -1,7 +1,7 @@
 #' A hierarchical Forward and Backward Stagewise (HierFabs) algorithm for identifying hierachical interaction of genomics data.
 #'
-#' @useDynLib HierFabs, .registration = TRUE
 #' @export
+#' @useDynLib Fabs, .registration = TRUE
 #' @param G Gene matrix, each row is an observation vector.
 #' @param y Response variable. For logistic regression model, y takes value at 1 and -1. 
 #' @param E An optional environment matrix. If Z is given, the interactions between environment and gene are of interest. Otherwise, the gene-gene interactions are of interest.
@@ -36,6 +36,7 @@
 #'   \item intercept - The intercept term, which appearance is due to standardization.
 #' }
 #' @seealso \code{\link{predict.HierFabs}}, \code{\link{print.HierFabs}}
+#' @importFrom Matrix sparseMatrix
 #'
 #' @examples
 #' set.seed(0)
@@ -89,7 +90,7 @@
 HierFabs = function(G, y, E, weight = NULL, model = c("gaussian", "cox", "quantile", "logistic"), back = TRUE,
   stoping = TRUE, eps = 0.01, xi = 10^-6, iter = 3000, lambda.min = NULL, lambda.ratio = NULL, 
   hier = c("strong", "weak"), max_s = NULL, diagonal = FALSE, status = NULL, gamma = NULL, 
-  tau = NUL, criteria = c("EBIC", "BIC"))
+  tau = NULL, criteria = c("EBIC", "BIC"))
 {
   n  = nrow(G)
   px = ncol(G)
@@ -180,7 +181,7 @@ HierFabs = function(G, y, E, weight = NULL, model = c("gaussian", "cox", "quanti
     }
   }
   opt      = which.min(fit$bic)
-  opttheta = theta[,opt,drop=FALSE]
+  opttheta = theta[,opt]
 
   val = list(theta     = theta,
              beta      = opttheta,

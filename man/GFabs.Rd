@@ -65,9 +65,8 @@ A list.
 A Group Forward and Backward Stagewise (GFabs) algorithm for Group penalized problem.
 }
 \examples{
-library(mvtnorm)
 sigma = outer(1:20, 1:20, FUN = function(x, y) 0.3^(abs(x - y)))
-x     = rmvnorm(100, mean = rep(0,20), sigma = sigma)
+x     = matrix(rnorm(100*20), 100, 20) \%*\% Matrix::chol(sigma)
 b     = c(5, -5, 5, -5, rep(0, 16))
 error = c(0.7*rnorm(100)+0.3*rcauchy(100))
 y     = x \%*\% b + error

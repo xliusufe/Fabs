@@ -1,6 +1,7 @@
 #' A Group Forward and Backward Stagewise (GFabs) algorithm for Group penalized varying coefficient problem.
 #'
-#' @param X The covariates matrix.
+#' @useDynLib Fabs, .registration = TRUE
+#' @param x The covariates matrix.
 #' @param y The survival outcome.
 #' @param u The expose variable.
 #' @param status The censoring indicator.
@@ -32,24 +33,25 @@
 #'   \item phi - The spline basis.
 #' }
 #' @export
+#' @importFrom splines bs
+#' @importFrom Matrix KhatriRao
 #'
 #' @examples
-#' library(mvtnorm)
 #' sigma = outer(1:20, 1:20, FUN = function(x, y) 0.3^(abs(x - y)))
-#' x     = rmvnorm(100, mean = rep(0,20), sigma = sigma)
+#' x     = matrix(rnorm(100*20), 100, 20) %*% Matrix::chol(sigma)
 #' u     = runif(100)
 #' b     = cbind(5*sin(2*pi*u), 5*cos(2*pi*u), 5, -5, matrix(0, 100, 16))
 #' error = c(0.7*rnorm(100)+0.3*rcauchy(100))
 #' y     = rowSums(x * b) + error
 #' fit   <- GFabs_vc(x, y, u)
 
-GFabs_vc = function(X, y, u, status=NULL, sigma=NULL, weight=NULL, bs.df = 5, bs.degree = 3,
+GFabs_vc = function(x, y, u, status=NULL, sigma=NULL, weight=NULL, bs.df = 5, bs.degree = 3,
                       model=c("spr", "square", "cox", "logistic"), back=TRUE, stoping=TRUE,
                       eps = 0.01, xi = 10^-6, iter=10^4, lambda.min = NULL, design = FALSE)
 {
   basis <- bs(u, df = bs.df, degree = bs.degree)
   phi   <- cbind(1, basis)
-  W     <- as.matrix(t(KhatriRao(t(x), t(phi))))
+  W     <- as.matrix(Matrix::t(KhatriRao(Matrix::t(x), Matrix::t(phi))))
 
   px     <- ncol(x)
   group  <- sort(c(2*(1:px)-1, rep(2*(1:px), each = bs.df)))
@@ -74,6 +76,7 @@ GFabs_vc = function(X, y, u, status=NULL, sigma=NULL, weight=NULL, bs.df = 5, bs
   if (is.null(lambda.min)) lambda.min = {if (n > p) 1e-4 else .02}
   if (is.null(weight))         weight = sqrt(K)
   
+  model = match.arg(model)
   if (model == "cox") {
     y.order = order(y)
     W.std   = W.std[y.order, ]
@@ -84,7 +87,6 @@ GFabs_vc = function(X, y, u, status=NULL, sigma=NULL, weight=NULL, bs.df = 5, bs
   #if (type == "L2") type = 2
   type = 2
 
-  model = match.arg(model)
   VC    = TRUE
 
   fit <- .Call("BIC_grpFabs",

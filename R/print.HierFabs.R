@@ -2,6 +2,7 @@
 #'
 #' Similar to the usual print methods, this function summarize results from a fitted \code{'HierFabs'} object.
 #' @export
+#' @useDynLib Fabs, .registration = TRUE
 #' @param x Fitted \code{'HierFabs'} model object..
 #' @param digits  The number of significant digits for the coefficient estimates.
 #' @param \dots Not used. Other arguments to print.

@@ -5,7 +5,7 @@
 \title{A Group Forward and Backward Stagewise (GFabs) algorithm for Group penalized varying coefficient problem.}
 \usage{
 GFabs_vc(
-  X,
+  x,
   y,
   u,
   status = NULL,
@@ -24,7 +24,7 @@ GFabs_vc(
 )
 }
 \arguments{
-\item{X}{The covariates matrix.}
+\item{x}{The covariates matrix.}
 
 \item{y}{The survival outcome.}
 
@@ -76,9 +76,8 @@ A list.
 A Group Forward and Backward Stagewise (GFabs) algorithm for Group penalized varying coefficient problem.
 }
 \examples{
-library(mvtnorm)
 sigma = outer(1:20, 1:20, FUN = function(x, y) 0.3^(abs(x - y)))
-x     = rmvnorm(100, mean = rep(0,20), sigma = sigma)
+x     = matrix(rnorm(100*20), 100, 20) \%*\% Matrix::chol(sigma)
 u     = runif(100)
 b     = cbind(5*sin(2*pi*u), 5*cos(2*pi*u), 5, -5, matrix(0, 100, 16))
 error = c(0.7*rnorm(100)+0.3*rcauchy(100))

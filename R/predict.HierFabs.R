@@ -2,6 +2,7 @@
 #'
 #' Similar to the usual predict methods, this function returns predictions from a fitted \code{'HierFabs'} object.
 #' @export
+#' @useDynLib Fabs, .registration = TRUE
 #' @param object Fitted \code{'HierFabs'} model object.
 #' @param new.G Matrix of new values for genes.
 #' @param new.y Vector of new values for response. 

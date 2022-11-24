@@ -728,7 +728,7 @@ SEXP BIC_grpFabs(SEXP X, SEXP Y, SEXP Weight, SEXP Status, SEXP K0, SEXP K1, SEX
 			break;
 		}
 		if (i == iter-2) {
-			printf("Solution path unfinished, more iterations is needed.\n"); 
+			Rprintf("Solution path unfinished, more iterations is needed.\n"); 
 		}
 	}
 	

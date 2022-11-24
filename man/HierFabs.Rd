@@ -22,7 +22,7 @@ HierFabs(
   diagonal = FALSE,
   status = NULL,
   gamma = NULL,
-  tau = NUL,
+  tau = NULL,
   criteria = c("EBIC", "BIC")
 )
 }

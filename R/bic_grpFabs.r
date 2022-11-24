@@ -1,5 +1,6 @@
 #' A Group Forward and Backward Stagewise (GFabs) algorithm for Group penalized problem.
 #'
+#' @useDynLib Fabs, .registration = TRUE
 #' @param W The design matrix.
 #' @param y The survival outcome.
 #' @param group The grouping vector.
@@ -29,9 +30,8 @@
 #' @export
 #'
 #' @examples
-#' library(mvtnorm)
 #' sigma = outer(1:20, 1:20, FUN = function(x, y) 0.3^(abs(x - y)))
-#' x     = rmvnorm(100, mean = rep(0,20), sigma = sigma)
+#' x     = matrix(rnorm(100*20), 100, 20) %*% Matrix::chol(sigma)
 #' b     = c(5, -5, 5, -5, rep(0, 16))
 #' error = c(0.7*rnorm(100)+0.3*rcauchy(100))
 #' y     = x %*% b + error
@@ -69,6 +69,7 @@ GFabs = function(W, y, group, status=NULL, sigma=NULL, weight=NULL,
   if (is.null(lambda.min)) lambda.min = {if (n > p) 1e-4 else .02}
   if (is.null(weight))         weight = sqrt(K)
   
+  model = match.arg(model)
   if (model == "cox") {
     y.order = order(y)
     W.std   = W.std[y.order, ]
@@ -79,7 +80,6 @@ GFabs = function(W, y, group, status=NULL, sigma=NULL, weight=NULL,
   #if (type == "L2") type = 2
   type = 2
 
-  model = match.arg(model)
   VC    = FALSE
 
   fit <- .Call("BIC_grpFabs",
