@@ -10,3 +10,11 @@ importFrom(Matrix,sparseMatrix)
 importFrom(methods,as)
 importFrom(splines,bs)
 useDynLib(Fabs, .registration = TRUE)
+
+# LFabs
+export(LFabs)
+export(cv.LFabs)
+export(generator)
+import('Matrix')
+import('mvtnorm')
+
